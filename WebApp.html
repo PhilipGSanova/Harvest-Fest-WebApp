@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    .container {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: white;
+      padding: 5%;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 400px;
+    }
+    .visible {
+      display: flex;
+    }
+    h1, h2 {
+      margin-bottom: 20px;
+      font-size: 4vw;
+    }
+    label {
+      font-size: 3vw;
+    }
+    input, button {
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 3vw;
+      border: 1px solid black;
+      border-radius: 5px;
+      width: 80%;
+    }
+    button {
+      background-color: lightblue;
+      border: none;
+      cursor: pointer;
+    }
+    button:active, button:focus {
+      outline: none;
+      border: 1px solid black;
+    }
+    .message {
+      display: none;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: green;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 3vw;
+    }
+    .back-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 3vw;
+      background-color: lightblue;
+      border: 1px solid black;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 5px 10px;
+      width: auto;
+      display: inline-block;
+    }
+    .nav-button:active, .nav-button:focus {
+      outline: none;
+    }
+    @media (max-width: 600px) {
+      h1, h2 {
+        font-size: 8vw;
+      }
+      label, input, button, .message {
+        font-size: 6vw;
+      }
+      .back-button {
+        font-size: 8vw;
+        padding: 5px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="initialScreen" class="container visible">
+    <h1>Player Management</h1>
+    <label for="userLoginId">Enter User Login ID:</label>
+    <input type="text" id="userLoginId" name="userLoginId">
+    <button onclick="login()">Login</button>
+    <div id="loginMessage" style="display: none; color: red; margin-top: 10px;">Invalid login ID</div>
+  </div>
+
+  <div id="adminScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Create Player</h2>
+    <label for="playerName">Player Name:</label>
+    <input type="text" id="playerName" name="playerName">
+    <label for="playerId">Player ID:</label>
+    <input type="text" id="playerId" name="playerId">
+    <button onclick="createPlayer()">Create Player</button>
+    <div id="message"></div>
+  </div>
+
+  <div id="stallOwnerScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Stall Owner</h2>
+    <label for="playerIdStall">Enter Player ID:</label>
+    <input type="text" id="playerIdStall" name="playerIdStall">
+    <button onclick="proceedToStall()">Proceed</button>
+  </div>
+
+  <div id="stallScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Stall Owner</h2>
+    <div id="playerInfoStall"></div>
+    <label for="additionalPoints">Add Points (1-5):</label>
+    <input type="number" id="additionalPoints" name="additionalPoints" min="1" max="5" onkeydown="if(event.key === 'Enter'){updatePointsStall()}">
+    <button onclick="updatePointsStall()">Add Points</button>
+    <div id="messageStall"></div>
+  </div>
+
+  <div id="prizeCounterOwnerScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Prize Counter</h2>
+    <label for="playerIdPrize">Enter Player ID:</label>
+    <input type="text" id="playerIdPrize" name="playerIdPrize">
+    <button onclick="proceedToPrizeCounter()">Proceed</button>
+  </div>
+
+  <div id="prizeCounterScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Prize Counter</h2>
+    <div id="playerInfoPrize"></div>
+    <label for="subtractPoints">Subtract Points:</label>
+    <input type="number" id="subtractPoints" name="subtractPoints" onkeydown="if(event.key === 'Enter'){updatePointsPrize()}">
+    <button onclick="updatePointsPrize()">Subtract Points</button>
+    <div id="messagePrize"></div>
+  </div>
+
+  <div id="successMessage" class="message"></div>
+
+  <script>
+    function login() {
+      const userLoginId = document.getElementById('userLoginId').value;
+      const loginMessage = document.getElementById('loginMessage');
+      loginMessage.style.display = 'none';
+
+      if (userLoginId === 'A123') {
+        showScreen('adminScreen');
+      } else if (userLoginId === 'S123') {
+        showScreen('stallOwnerScreen');
+      } else if (userLoginId === 'P123') {
+        showScreen('prizeCounterOwnerScreen');
+      } else {
+        showTemporaryMessage('Invalid Login', 'green');
+        setTimeout(() => {
+          document.getElementById('userLoginId').value = '';
+          document.getElementById('userLoginId').focus();
+        }, 2000);
+      }
+    }
+
+    function showScreen(screenId) {
+      clearInputs();
+      document.querySelectorAll('.container').forEach(container => {
+        container.classList.remove('visible');
+      });
+      document.getElementById(screenId).classList.add('visible');
+    }
+
+    function goBack() {
+      clearInputs();
+      document.querySelectorAll('.container').forEach(container => {
+        container.classList.remove('visible');
+      });
+      document.getElementById('initialScreen').classList.add('visible');
+    }
+
+    function clearInputs() {
+      document.querySelectorAll('input').forEach(input => {
+        input.value = '';
+      });
+      document.getElementById('playerInfoStall').innerText = '';
+      document.getElementById('playerInfoPrize').innerText = '';
+      document.getElementById('message').innerText = '';
+      document.getElementById('messageStall').innerText = '';
+      document.getElementById('messagePrize').innerText = '';
+    }
+
+    function createPlayer() {
+      const playerName = document.getElementById('playerName').value;
+      const playerId = document.getElementById('playerId').value;
+      google.script.run.withSuccessHandler(() => {
+        showTemporaryMessage('Player created successfully!');
+        document.getElementById('playerName').value = '';
+        document.getElementById('playerId').value = '';
+      }).createPlayer(playerId, playerName);
+    }
+
+    function proceedToStall() {
+      const playerId = document.getElementById('playerIdStall').value;
+      google.script.run.withSuccessHandler(data => {
+        if (data) {
+          document.getElementById('playerInfoStall').innerText = `Player Name: ${data.name}`;
+          showScreen('stallScreen');
+        } else {
+          showTemporaryMessage('Player not found');
+          setTimeout(() => {
+            document.getElementById('playerIdStall').value = '';
+            document.getElementById('playerIdStall').focus();
+          }, 2000);
+        }
+      }).getPlayerInfo(playerId);
+    }
+
+    function updatePointsStall() {
+      const playerId = document.getElementById('playerIdStall').value;
+      const additionalPoints = parseInt(document.getElementById('additionalPoints').value);
+      google.script.run.withSuccessHandler(success => {
+        if (success) {
+          showTemporaryMessage('Points updated successfully');
+          setTimeout(() => {
+            document.getElementById('additionalPoints').value = '';
+            document.getElementById('playerIdStall').value = '';
+            document.getElementById('playerInfoStall').innerText = '';
+            showScreen('stallOwnerScreen');
+          }, 2000);
+        } else {
+          showTemporaryMessage('Failed to update points');
+        }
+      }).updatePlayerPoints(playerId, additionalPoints);
+    }
+
+    function proceedToPrizeCounter() {
+      const playerId = document.getElementById('playerIdPrize').value;
+      google.script.run.withSuccessHandler(data => {
+        if (data) {
+          document.getElementById('playerInfoPrize').innerText = `Player Name: ${data.name}, Player Points: ${data.points}`;
+          showScreen('prizeCounterScreen');
+        } else {
+          showTemporaryMessage('Player not found');
+          setTimeout(() => {
+            document.getElementById('playerIdPrize').value = '';
+            document.getElementById('playerIdPrize').focus();
+          }, 2000);
+        }
+      }).getPlayerInfo(playerId);
+    }
+
+    function updatePointsPrize() {
+      const playerId = document.getElementById('playerIdPrize').value;
+      const subtractPoints = parseInt(document.getElementById('subtractPoints').value);
+      google.script.run.withSuccessHandler(response => {
+        if (response.success) {
+          showTemporaryMessage(`Remaining Points: ${response.remainingPoints}`);
+          setTimeout(() => {
+            document.getElementById('subtractPoints').value = '';
+            document.getElementById('playerIdPrize').value = '';
+            document.getElementById('playerInfoPrize').innerText = '';
+            showScreen('prizeCounterOwnerScreen');
+          }, 2000);
+        } else {
+          showTemporaryMessage(response.message);
+          setTimeout(() => {
+            document.getElementById('subtractPoints').value = '';
+            document.getElementById('playerIdPrize').value = '';
+            document.getElementById('playerInfoPrize').innerText = '';
+            showScreen('prizeCounterOwnerScreen');
+          }, 2000);
+        }
+      }).subtractPlayerPoints(playerId, subtractPoints);
+    }
+
+    function showTemporaryMessage(message, bgColor = 'green') {
+      const messageElement = document.getElementById('successMessage');
+      messageElement.innerText = message;
+      messageElement.style.backgroundColor = bgColor;
+      messageElement.style.display = 'block';
+      setTimeout(() => {
+        messageElement.style.display = 'none';
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
