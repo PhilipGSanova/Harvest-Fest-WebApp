@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    .container {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: white;
+      padding: 5%;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 400px;
+    }
+    .visible {
+      display: flex;
+    }
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2em;
+    }
+    h2 {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    label {
+      font-size: 1.2em;
+    }
+    input, button {
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid black;
+      border-radius: 5px;
+      width: 80%;
+    }
+    button {
+      background-color: lightblue;
+      border: none;
+      cursor: pointer;
+    }
+    button:active, button:focus {
+      outline: none;
+      border: 1px solid black;
+    }
+    .message {
+      display: none;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: green;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+    .back-button {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 1em;
+      background-color: lightblue;
+      border: 1px solid black;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 5px 10px;
+      width: auto;
+      display: inline-block;
+    }
+    .player-name{
+      font-size: 1.5em;
+      margin-bottom:10px;
+    }
+    .player-info {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+    }
+    .nav-button:active, .nav-button:focus {
+      outline: none;
+    }
+    @media (min-width: 1024px) {
+      .container {
+        max-width: 500px;
+      }
+      h1, h2 {
+        font-size: 2.5em;
+      }
+      input, button, label {
+        font-size: 1.2em;
+      }
+    }
+  </style>
+
+</head>
+<body>
+  <div id="initialScreen" class="container visible">
+    <h1>Harvest Fest Token System</h1>
+    <label for="userLoginId">Enter Login ID:</label>
+    <input type="text" id="userLoginId" name="userLoginId">
+    <button onclick="login()">Login</button>
+    <div id="loginMessage" style="display: none; color: red; margin-top: 10px;">Invalid login ID</div>
+  </div>
+
+  <div id="adminScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Create Player</h2>
+    <label for="playerName">Player Name:</label>
+    <input type="text" id="playerName" name="playerName">
+    <label for="playerId">Player ID:</label>
+    <input type="text" id="playerId" name="playerId">
+    <button onclick="createPlayer()">Create Player</button>
+    <div id="message"></div>
+  </div>
+  
+  <div id="ShootTheHoopsScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Shoot the Hoops</h2>
+    <label for="playerIdStall_1">Enter Player ID:</label>
+    <input type="text" id="playerIdStall_1" name="playerIdStall_1">
+    <button onclick="proceedToStall_1()">Enter</button>
+    <div id="messageStall"></div>
+  </div>
+
+  <div id="DartsScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Darts</h2>
+    <label for="playerIdStall">Enter Player ID:</label>
+    <input type="text" id="playerIdStall" name="playerIdStall">
+    <button onclick="proceedToStall()">Enter</button>
+    <div id="messageStall"></div>
+  </div>
+
+  <div id="FloatingTowerScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Floating Tower</h2>
+    <label for="playerIdStall">Enter Player ID:</label>
+    <input type="text" id="playerIdStall" name="playerIdStall">
+    <button onclick="proceedToStall()">Enter</button>
+    <div id="messageStall"></div>
+  </div>
+
+  <div id="ColourBlindScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Colour Blind</h2>
+    <label for="playerIdStall">Enter Player ID:</label>
+    <input type="text" id="playerIdStall" name="playerIdStall">
+    <button onclick="proceedToStall()">Enter</button>
+    <div id="messageStall"></div>
+  </div>
+
+  <div id="KillTheRatScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Kill the Rat</h2>
+    <label for="playerIdStall">Enter Player ID:</label>
+    <input type="text" id="playerIdStall" name="playerIdStall">
+    <button onclick="proceedToStall()">Enter</button>
+    <div id="messageStall"></div>
+  </div>
+
+  <div id="BlowTheCandleScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Blow the Candle</h2>
+    <label for="playerIdStall">Enter Player ID:</label>
+    <input type="text" id="playerIdStall" name="playerIdStall">
+    <button onclick="proceedToStall()">Enter</button>
+    <div id="messageStall"></div>
+  </div>
+
+  <div id="StackAttackFlipTheBottleScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Stack Attack & Flip the Bottle</h2>
+    <label for="playerIdStall">Enter Player ID:</label>
+    <input type="text" id="playerIdStall" name="playerIdStall">
+    <button onclick="proceedToStall()">Enter</button>
+    <div id="messageStall"></div>
+  </div>
+
+  <div id="WhisperChallengeScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Whisper Challenge</h2>
+    <label for="playerIdStall">Enter Player ID:</label>
+    <input type="text" id="playerIdStall" name="playerIdStall">
+    <button onclick="proceedToStall()">Enter</button>
+    <div id="messageStall"></div>
+  </div>
+
+  <div id="EmojiScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Emoji</h2>
+    <label for="playerIdStall">Enter Player ID:</label>
+    <input type="text" id="playerIdStall" name="playerIdStall">
+    <button onclick="proceedToStall()">Enter</button>
+    <div id="messageStall"></div>
+  </div>
+
+  <div id="BlowTheCupsScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Blow the Cups</h2>
+    <label for="playerIdStall">Enter Player ID:</label>
+    <input type="text" id="playerIdStall" name="playerIdStall">
+    <button onclick="proceedToStall()">Enter</button>
+    <div id="messageStall"></div>
+  </div>
+
+  <div id="BibleTriviaScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>BibleTrivia</h2>
+    <label for="playerIdStall">Enter Player ID:</label>
+    <input type="text" id="playerIdStall" name="playerIdStall">
+    <button onclick="proceedToStall()">Enter</button>
+    <div id="messageStall"></div>
+  </div>
+
+  <div id="BackupStallScreen1" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Back Up Stall 1</h2>
+    <label for="playerIdStall">Enter Player ID:</label>
+    <input type="text" id="playerIdStall" name="playerIdStall">
+    <button onclick="proceedToStall()">Enter</button>
+    <div id="messageStall"></div>
+  </div>
+
+  <div id="BackupStallScreen2" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Back Up Stall </h2>
+    <label for="playerIdStall">Enter Player ID:</label>
+    <input type="text" id="playerIdStall" name="playerIdStall">
+    <button onclick="proceedToStall()">Enter</button>
+    <div id="messageStall"></div>
+  </div>
+
+  <div id="BackupStallScreen3" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Back Up Stall 3</h2>
+    <label for="playerIdStall">Enter Player ID:</label>
+    <input type="text" id="playerIdStall" name="playerIdStall">
+    <button onclick="proceedToStall()">Enter</button>
+    <div id="messageStall"></div>
+  </div>
+
+  <div id="stallScreen_1" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Enter Points</h2>
+    <div id="playerInfoStall_1" class="player-info"></div> <!-- Updated class -->
+    <label for="additionalPoints">Add Points (1 and above):</label>
+    <input type="number" id="additionalPoints" name="additionalPoints" min="1" onkeydown="if(event.key === 'Enter'){updatePointsStall()}">
+    <button onclick="updatePointsStall_1()">Enter</button>
+    <div id="messageStall"></div>
+  </div>
+
+
+  <div id="giftCounterScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Gift Counter</h2>
+    <label for="playerIdGift">Enter Player ID:</label>
+    <input type="text" id="playerIdGift" name="playerIdGift">
+    <button onclick="proceedToGiftCounter()">Enter</button>
+    <div id="messageGift"></div>
+  </div>
+
+  <div id="giftScreen" class="container">
+    <button class="back-button" onclick="goBack()">BACK</button>
+    <h2>Deduct Points</h2>
+    <div id="playerInfoGift"></div>
+    <label for="pointsToDeduct">Enter Points:</label>
+    <input type="number" id="pointsToDeduct" name="pointsToDeduct" min="1" onkeydown="if(event.key === 'Enter'){deductPointsGift()}">
+    <button onclick="deductPointsGift()">Deduct</button>
+    <div id="messageGift"></div>
+  </div>
+
+
+  <div id="notification" class="message"></div>
+  <script>
+    function login() {
+      const userId = document.getElementById('userLoginId').value.trim();
+      if (userId === 'HFA1384') {
+        showScreen('adminScreen');
+      } else if (userId === 'HFS3482') {
+        showScreen('ShootTheHoopsScreen');
+      } else if (userId === 'HFG2684') {
+        showScreen('giftCounterScreen');
+      } else if(userId === 'HFS5917'){
+        showScreen('DartsScreen');
+      }else if(userId === 'HFS2764'){
+        showScreen('FloatingTowerScreen');
+      }else if(userId === 'HFS4821'){
+        showScreen('ColourBlindScreen');
+      }else if(userId === 'HFS7390'){
+        showScreen('KillTheRatScreen');
+      }else if(userId === 'HFS1056'){
+        showScreen('BlowTheCandleScreen');
+      }else if(userId === 'HFS8294'){
+        showScreen('StackAttackFlipTheBottleScreen');
+      }else if(userId === 'HFS6347'){
+        showScreen('WhisperChallengeScreen');
+      }else if(userId === 'HFS9812'){
+        showScreen('EmojiScreen');
+      }else if(userId === 'HFS4573'){
+        showScreen('BlowTheCupsScreen');
+      }else if(userId === 'HFS2085'){
+        showScreen('BibleTriviaScreen');
+      }else if(userId === 'HFS7429'){
+        showScreen('BackupStallScreen1');
+      }else if(userId === 'HFS8614'){
+        showScreen('BackupStallScreen2');
+      }else if(userId === 'HFS9537'){
+        showScreen('BackupStallScreen3');
+      }else {
+        document.getElementById('loginMessage').style.display = 'block';
+      }
+    }
+
+    function goBack() {
+      showScreen('initialScreen');
+    }
+
+    function showScreen(screenId) {
+      const screens = document.querySelectorAll('.container');
+      screens.forEach(screen => screen.classList.remove('visible'));
+      document.getElementById(screenId).classList.add('visible');
+    }
+
+    function validatePlayerId() {
+      const playerIdInput = document.getElementById('playerId');
+      const playerId = playerIdInput.value;
+      if (/[^0-9]/.test(playerId)) {
+        playerIdInput.value = playerId.replace(/[^0-9]/g, '');
+        showNotification('PlayerId must be a Number', 'red');
+      }
+    }
+    
+    function createPlayer() {
+      const playerName = document.getElementById('playerName').value.trim();
+      const playerId = document.getElementById('playerId').value.trim();
+
+      if (!playerId) {
+        showNotification('PlayerId must be a Number', 'red');
+        return;
+      }
+      
+      google.script.run.withSuccessHandler(response => {
+        if (response === 'created') {
+          showNotification('Player created successfully!', 'green');
+          document.getElementById('playerName').value = '';
+          document.getElementById('playerId').value = '';
+        } else if (response === 'exists') {
+          showNotification('Player ID already exists!', 'red');
+        }
+      }).createPlayer(playerName, playerId);
+    }
+
+    function resetForm() {
+      document.getElementById('playerName').value = '';
+      document.getElementById('playerId').value = '';
+    }
+
+    function proceedToStall_1() {
+      const playerId = document.getElementById('playerIdStall_1').value.trim();
+      google.script.run.withSuccessHandler(response => {
+        if (response === 'not_found') {
+          showNotification('Invalid PlayerId', 'red');
+          setTimeout(() => {
+            resetStallOwnerScreen();
+            showScreen('ShootTheHoopsScreen');
+          }, 2000);
+        } else {
+          document.getElementById('playerInfoStall_1').textContent = `Player Name: ${response.name}, Points: ${response.points}`;
+          showScreen('stallScreen_1');
+        }
+      }).checkPlayerId(playerId);
+    }
+
+    function updatePointsStall_1() {
+      const playerId = document.getElementById('playerIdStall_1').value.trim();
+      const points = parseInt(document.getElementById('additionalPoints').value.trim());
+      const game = 'Shoot the Hoops';
+      if (points < 1) return;
+      
+      google.script.run.withSuccessHandler(response => {
+        if (response === 'success') {
+          showNotification('Points added successfully!', 'green');
+          setTimeout(() => {
+            resetStallOwnerScreen();
+            showScreen('ShootTheHoopsScreen');
+          }, 2000);
+        } else {
+          showNotification('Failed to add points!', 'red');
+        }
+      }).updatePlayerPoints(game, playerId, points); 
+    }
+
+
+    function proceedToGiftCounter() {
+      const playerId = document.getElementById('playerIdGift').value.trim();
+      google.script.run.withSuccessHandler(response => {
+        if (response === 'not_found') {
+          document.getElementById('messageGift').textContent = 'Player not found';
+        } else {
+          document.getElementById('playerInfoGift').textContent = `Player Name: ${response.name}, Points: ${response.points}`;
+          showScreen('giftScreen');
+        }
+      }).checkPlayerId(playerId);
+    }
+
+
+    function resetStallOwnerScreen() {
+      document.getElementById('playerIdStall').value = '';
+      document.getElementById('additionalPoints').value = '';
+      document.getElementById('playerInfoStall').textContent = '';
+      document.getElementById('messageStall').textContent = '';
+    }
+
+    function deductPointsGift() {
+      const playerId = document.getElementById('playerIdGift').value.trim();
+      const points = parseInt(document.getElementById('pointsToDeduct').value.trim(), 10);
+
+      if (isNaN(points) || points < 1) {
+        showNotification('Points must be a number greater than 0', 'red');
+        return;
+      }
+
+      google.script.run.withSuccessHandler(response => {
+        console.log('Response from server:', response); 
+
+        if (response && response.success) {
+          const message = `Points Successfully Deducted! Remaining Points: ${response.remainingPoints}`;
+          showNotification(message, 'green');
+          setTimeout(() => {
+            resetGiftCounterScreen();
+            showScreen('giftScreen'); 
+          }, 2000);
+        } else if (response && response.exceeds_limit) {
+          showNotification('Points exceed Balance', 'red');
+          setTimeout(() => {
+            resetGiftCounterScreen();
+            showScreen('giftScreen'); 
+          }, 2000);
+        } else {
+          showNotification('Failed to deduct points!', 'red');
+        }
+      }).deductPointsGift(playerId, points);
+    }
+
+    function resetGiftCounterScreen() {
+      document.getElementById('playerIdGift').value = '';
+      document.getElementById('pointsToDeduct').value = '';
+    }
+
+    function showNotification(message, color) {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.style.backgroundColor = color;
+      notification.style.display = 'block';
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 2000);
+    }
+
+  </script>
+</body>
+</html>
